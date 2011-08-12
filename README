@@ -1,0 +1,14 @@
+Open source online judge (osoj)
+
+
+Osoj is written in python, using webpy
+
+It requires python2.6
+a recent version of webpy
+and GCC to compile the test proposed by students
+
+for the moment it will works only on linux 
+(though it should be not so hard to port it to works on windows and even less on
+other unix system(it may works out of the box for them))
+
+Don't forget to compile the libc in the libc folder

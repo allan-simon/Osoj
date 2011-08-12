@@ -1,0 +1,96 @@
+$def with (exoNumber, problem, form)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>Exercise number $exoNumber</title>
+    <!-- TODO change the hardcoded server path for the javascript -->
+	<script language="Javascript" type="text/javascript" src="http://js.sysko.fr/edit_area/edit_area_full.js"></script>
+	<script language="Javascript" type="text/javascript">
+		
+		editAreaLoader.init({
+			id: "code"	// id of the textarea to transform	
+			,start_highlight: true
+			,allow_toggle: false
+			,language: "en"
+			,syntax: "html"	
+			,toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight, |, help"
+			,syntax_selection_allow: "c,cpp"
+			,is_multi_files: true
+			,EA_load_callback: "editAreaLoaded"
+			,show_line_colors: true
+		});
+		
+		
+		
+		
+		function test_setSelectionRange(id){
+			editAreaLoader.setSelectionRange(id, 100, 150);
+		}
+		
+		function test_getSelectionRange(id){
+			var sel =editAreaLoader.getSelectionRange(id);
+			alert("start: "+sel["start"]+"\nend: "+sel["end"]); 
+		}
+		
+		function test_setSelectedText(id){
+			text= "[REPLACED SELECTION]"; 
+			editAreaLoader.setSelectedText(id, text);
+		}
+		
+		function test_getSelectedText(id){
+			alert(editAreaLoader.getSelectedText(id)); 
+		}
+		
+		function editAreaLoaded(id){
+			if(id=="code")
+			{
+				open_file1();
+			}
+		}
+		
+		function open_file1()
+		{
+			var new_file= {id: "code", text: "", syntax: 'cpp', title: 'your code'};
+			editAreaLoader.openFile('code', new_file);
+		}
+		
+		
+		function toogle_editable(id)
+		{
+			editAreaLoader.execCommand(id, 'set_editable', !editAreaLoader.execCommand(id, 'is_editable'));
+		}
+	
+	</script>
+</head>
+<body>
+
+        
+<div id="description" class="module">
+
+    <h2>Exercise Number $exoNumber</h2>
+    <a href="/">go back to index </a>
+    <div>
+        <pre>$problem</pre>
+    </div>
+
+    <form
+        id="NyProfileEditDescription"
+        method="post"
+        action="/exercise/$exoNumber"
+    >
+        <div>
+            $:form.render()
+        </div>
+        <div class="submit&gt;">
+            <input name="submit" value="Submit" type="submit">
+        </div>
+
+    </form>
+
+</div>
+
+    
+
+</body>
+</html>
