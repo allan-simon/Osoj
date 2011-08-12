@@ -6,11 +6,11 @@ from test import Compiler
 class Exercise:
     def __init__(self) :
         self.db = web.database(dbn="sqlite", db="openoj.db")
-        self.render = web.template.render('templates/')
+        self.render = web.template.render('templates/', base="layout")
         self.ExoForm = form.Form(
             form.Textarea(
                 "code",
-                id = "code",
+                id = "codeeditor",
                 value="paste here your c++ code to check",
                 rows=30,
                 cols=80

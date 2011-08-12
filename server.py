@@ -24,7 +24,7 @@ class Index:
 
     def __init__(self) :
         self.db = web.database(dbn="sqlite", db="openoj.db")
-        self.render = web.template.render('templates/')
+        self.render = web.template.render('templates/', base = "layout")
 
     def GET(self):
         exosList = self.db.select(

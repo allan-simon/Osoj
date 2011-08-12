@@ -1,51 +1,47 @@
-$def with (code,errors,compilerOutput,softwareOutput,normalOutput)
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <title></title>
-</head>
-<body>
-
-        
-<div id="description" class="module">
+$def with (code,errors,compilerOutput,softwareOutput,normalOutput) 
 
 
-    <h2>Results</h2>
+<h2>Results</h2>
 
-    <a href="/">go back to index </a>
+<a href="/">go back to index </a>
+<div class="module">
     <div>
         $if errors != "":
             <pre>$errors</pre>
         $else:
             Your code is right !
     </div>
+</div>
 
+
+<div class="module" >
     <h3>Compiler output</h3>
 
     <div>
-        <pre>$compilerOutput</pre>
+        <pre class="output">$compilerOutput</pre>
     </div>
+</div>
 
+<div class="module">
     <h3>Software output</h3>
 
     <h4>What your software has output</h4>
     <div>
-        <pre style="font-family:Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;margin-bottom:10px;overflow:auto;width:auto;padding:5px;background-color:#eee;width:650px!ie7;padding-bottom:20px!ie7;max-height:600px;">$softwareOutput</pre>
+        $if softwareOutput:
+            <pre class="output">$softwareOutput</pre>
+        $else:
+            Your software has output nothing.
     </div>
 
     <h4>What it was supposed to output</h4>
     <div>
-        <pre>$normalOutput</pre>
+        <pre class="output">$normalOutput</pre>
     </div>
+</div>
 
 
+<div class="module" >
     <h3>Your code</h3>
 
     <pre>$code</pre>
 </div>
-
-    
-
-</body>
-</html>

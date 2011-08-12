@@ -37,7 +37,8 @@ class Compiler(object):
 
 
     def compile(self,stdin):
-        print "stdin:" + stdin
+        if not stdin:
+            stdin = ""
         self.softwareName = "test"
         compile = Command(
             ["g++ -o /tmp/"+ self.softwareName +" -x c++ -"]

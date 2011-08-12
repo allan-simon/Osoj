@@ -5,6 +5,7 @@ from test import Compiler
 
 class AddExo:
     def __init__(self) :
+        self.render = web.template.render('templates/', base = "layout")
         self.AddExoForm = form.Form(
             form.Textarea(
                 "problem",
@@ -15,6 +16,7 @@ class AddExo:
 
             form.Textarea(
                 "code",
+                id = "codeeditor",
                 value="paste here your c++ code to check",
                 rows=30,
                 cols=80
@@ -28,8 +30,7 @@ class AddExo:
 
     def GET(self):
         form = self.AddExoForm()
-        render = web.template.render('templates/')
-        return render.addexo(form)
+        return self.render.addexo(form)
 
 
     def POST(self):
@@ -43,7 +44,7 @@ class AddExo:
         compiler = Compiler()
         compiler.compile(code)
 
-        error = compiler.compileOutput
+        error = compiler.compileSdtout
         if error == "" :
             compiler.run(stdin)
             stdout = compiler.runStdout

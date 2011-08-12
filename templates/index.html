@@ -1,26 +1,25 @@
 $def with (exosList)
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    <title>Open source Online Judge</title>
-</head>
-<body>
-
         
-<div id="description" class="module">
 
-    <h2>Welcome</h2>
+<h2>Welcome</h2>
 
+<div class="module">
     <ul>
         $for exo in exosList:
             <li>
                 <a href="/exercise/$exo.id">Exercise number $exo.id</a>
             </li>
+
     <ul>
+
 </div>
+<div class="module">
+    <h2>Other tools</h2>
 
+    <ul>
+        <li>
+            <a href="/freestyle">Online compiler</a>
+        </li>
+    </ul>
+</div>
     
-
-</body>
-</html>
