@@ -1,4 +1,8 @@
 from subprocess import Popen, PIPE, STDOUT
+import codecs
+import time
+import os.path
+
 import subprocess, threading
 
 class Command(object):
@@ -10,9 +14,11 @@ class Command(object):
 
     def run(self, timeout, stdin):
         def target():
+            print stdin.encode("utf-8",'ignore')
+
             self.process = subprocess.Popen(self.cmd, shell=True,stdout=PIPE, stdin=PIPE, stderr=STDOUT)
             self.out = self.process.communicate(
-                input = stdin
+                input = stdin.encode("utf-8",'ignore')
             )[0]
 
         thread = threading.Thread(target=target)
@@ -39,15 +45,17 @@ class Compiler(object):
     def compile(self,stdin):
         if not stdin:
             stdin = ""
-        self.softwareName = "test"
+        self.softwareName = "%X" % time.time() #todo change this by something more unique (uuid like?)
         compile = Command(
-            ["g++ -o /tmp/"+ self.softwareName +" -x c++ -"]
+            ["g++ -Wall -Wextra -o /tmp/"+ self.softwareName +" -x c++ -"]
         );
         compile.run(
             6,
             stdin
         )
+
         self.compileSdtout = compile.out
+        return os.path.isfile("/tmp/" + self.softwareName)
 
 
     def run(self,stdin):
@@ -67,6 +75,9 @@ class Compiler(object):
             self.run(stdin)
             return normalStdout == self.runStdout
         return False
+
+    def clean(self):
+        os.remove("/tmp/" + self.softwareName)
 
 
 

@@ -20,11 +20,6 @@ class Test:
                 "stdin",
                 rows="2",
                 cols=80
-            ),
-            form.Textarea(
-                "correctstdout",
-                rows="2",
-                cols=80
             )
         )
 
@@ -39,27 +34,25 @@ class Test:
         code = form["code"].value
         print code
         stdin = form["stdin"].value
-        correctStdout = form["correctstdout"].value
 
         compiler = Compiler()
-        success = compiler.check_compile_run(
-            code,
-            stdin,
-            correctStdout
-        )
 
-
+        compileHasSucceeded = compiler.compile(code)
         error = ""
-        if not success:
-            error = "What your software is supposed to display and what it actually displays mismatch"
+        if compileHasSucceeded :
+            compiler.run(stdin)
+            compiler.clean()
+        else:
+            error = "compilation has failed"
 
 
-        return self.render.result(
+
+        return self.render.free(
             code,
             error,
             compiler.compileSdtout,
-            compiler.runStdout,
-            correctStdout
+            stdin,
+            compiler.runStdout
         )
 
 

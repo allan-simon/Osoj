@@ -1,0 +1,55 @@
+$def with (code,errors,compilerOutput,softwareInput,softwareOutput) 
+
+
+<h2>Results</h2>
+
+<a href="/">go back to index </a>
+<div class="module">
+    <div>
+        $if errors != "":
+            <pre>$errors</pre>
+        $else:
+            Your code compiles!
+    </div>
+</div>
+
+
+<div class="module" >
+    <h3>Compiler output</h3>
+    <div>
+        $if compilerOutput:
+            <pre class="output">$compilerOutput</pre>
+        $else:
+            The compiler has output nothing.
+    </div>
+</div>
+
+<div class="module">
+
+<div class="module">
+    <h3>What you have input</h3>
+    <div>
+        $if softwareInput:
+            <pre class="output">$softwareInput</pre>
+        $else:
+            You've input nothing
+    </div>
+
+
+
+    <h3>What your software has output</h3>
+    <div>
+        $if softwareOutput:
+            <pre class="output">$softwareOutput</pre>
+        $else:
+            Your software has output nothing.
+    </div>
+
+</div>
+
+
+<div class="module" >
+    <h3>Your code</h3>
+
+    <pre>$code</pre>
+</div>

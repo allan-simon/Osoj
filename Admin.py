@@ -6,7 +6,12 @@ from test import Compiler
 class AddExo:
     def __init__(self) :
         self.render = web.template.render('templates/', base = "layout")
+        self.db = web.database(dbn="sqlite", db="openoj.db")
         self.AddExoForm = form.Form(
+            form.Textbox(
+                "title",
+                value="",
+            ),
             form.Textarea(
                 "problem",
                 value="put here a description of the problem",
@@ -22,10 +27,25 @@ class AddExo:
                 cols=80
             ),
             form.Textarea(
-                "stdin",
+                "stdin0",
                 rows="2",
                 cols=80
-            )
+            ),
+            form.Textarea(
+                "stdin1",
+                rows="2",
+                cols=80
+            ),
+            form.Textarea(
+                "stdin2",
+                rows="2",
+                cols=80
+            ),
+            form.Textarea(
+                "stdin3",
+                rows="2",
+                cols=80
+            ),
         )
 
     def GET(self):
@@ -38,22 +58,47 @@ class AddExo:
         form.validates()
 
         code = form["code"].value
+        title = form["title"].value
         problem = form["problem"].value
-        stdin = form["stdin"].value
+
+        stdins = []
+        stdouts = []
+
+
+        for i in range(4):
+            stdins.append(
+                form["stdin"+str(i)].value
+            )
 
         compiler = Compiler()
         compiler.compile(code)
 
         error = compiler.compileSdtout
         if error == "" :
-            compiler.run(stdin)
-            stdout = compiler.runStdout
+            for stdin in stdins:
+                compiler.run(stdin)
+                stdouts.append(compiler.runStdout)
 
-            db = web.database(dbn="sqlite", db="openoj.db")
-            db.insert(
+            self.db.insert(
                 "exos",
                 problem = problem,
-                stdin = stdin,
-                stdout = stdout
+                title = title,
+                possible_solution = code
             )
+
+            exoId = self.db.select(
+                "exos",
+                dict(title=title),
+                what = "id",
+                where = "title = $title"
+            )[0].id
+
+            for i in range(4):
+                self.db.insert(
+                    "tests",
+                    exo_id = exoId,
+                    stdin = stdins[i],
+                    stdout = stdouts[i]
+                )
+
         raise web.seeother('/admin/add-exercise')

@@ -1,4 +1,4 @@
-$def with (code,errors,compilerOutput,softwareOutput,normalOutput) 
+$def with (code,errors,compilerOutput, successTests) 
 
 
 <h2>Results</h2>
@@ -23,20 +23,28 @@ $def with (code,errors,compilerOutput,softwareOutput,normalOutput)
 </div>
 
 <div class="module">
-    <h3>Software output</h3>
+    <h3>Tests</h3>
 
-    <h4>What your software has output</h4>
-    <div>
-        $if softwareOutput:
-            <pre class="output">$softwareOutput</pre>
-        $else:
-            Your software has output nothing.
-    </div>
+    <table>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
 
-    <h4>What it was supposed to output</h4>
-    <div>
-        <pre class="output">$normalOutput</pre>
-    </div>
+        $for i in range(len(successTests)):
+            <tr>
+                <td>
+                    $i
+                </td>
+                <td>
+                    $if successTests[i]:
+                        Success
+                    $else:
+                        Fail
+                </td>
+            </tr>
+
+    </table>
 </div>
 
 

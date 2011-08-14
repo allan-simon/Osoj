@@ -33,32 +33,46 @@ class Exercise:
         form = self.ExoForm()
         form.validates()
 
-        code = form["code"].value
+        code = unicode(form["code"].value)
 
         var = dict(id= exoNumber)
-        exo = self.db.select(
-            "exos",
+        tests = self.db.select(
+            "tests",
             var,
-            where = 'id = $id',
-        )[0];
+            what = "stdin, stdout",
+            where = 'exo_id = $id',
+        );
 
         compiler = Compiler()
-        success = compiler.check_compile_run(
-            code,
-            exo.stdin,
-            exo.stdout
-        )
+        compileHasSucceeded = compiler.compile(code)
+
+        #array of boolean if a given test has succed or not
+        successTests = []
+        oneTestHasFailed = False
 
         error = ""
-        if not success:
-            error = "What your software is supposed to display and what it actually displays mismatch"
+        if compileHasSucceeded :
+            for test in tests:
+                compiler.run(test.stdin)
+                
+                success = compiler.runStdout == test.stdout
+                print "prout"
+                print compiler.runStdout
+                successTests.append(success)
+                if not success:
+
+                    error = "Some of the tests to check if your software works has failed" 
+            compiler.clean()
+        else:
+            error = "compilation has failed"
+
+
 
 
         return self.render.result(
             code,
             error,
             compiler.compileSdtout,
-            compiler.runStdout,
-            exo.stdout
+            successTests
         )
 
