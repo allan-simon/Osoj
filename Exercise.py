@@ -26,7 +26,11 @@ class Exercise:
         )[0];
 
         form = self.ExoForm()
-        return self.render.exercise(exoNumber, exo.problem, form)
+        return self.render.exercise(
+            exoNumber,
+            exo.problem.replace("\n","<br/>\n"),
+            form
+        )
 
     def POST(self,exoNumber):
         

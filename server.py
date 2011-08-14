@@ -29,7 +29,7 @@ class Index:
     def GET(self):
         exosList = self.db.select(
             "exos",
-            what = "id",
+            what = "id,title",
         );
         return self.render.index(exosList)
 
