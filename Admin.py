@@ -3,6 +3,7 @@ from web import form
 
 from test import Compiler
 
+
 class AddExo:
     def __init__(self) :
         self.render = web.template.render('templates/', base = "layout")
@@ -71,10 +72,15 @@ class AddExo:
             )
 
         compiler = Compiler()
-        compiler.compile(code)
+        compileHasSucceeded = compiler.compile(code)
 
         error = compiler.compileSdtout
-        if error == "" :
+
+        exo = None
+        tests = None
+
+        error = ""
+        if compileHasSucceeded :
             for stdin in stdins:
                 compiler.run(stdin)
                 stdouts.append(compiler.runStdout)
@@ -86,12 +92,14 @@ class AddExo:
                 possible_solution = code
             )
 
-            exoId = self.db.select(
+            exo = self.db.select(
                 "exos",
                 dict(title=title),
-                what = "id",
+                what = "id, title, problem, possible_solution",
                 where = "title = $title"
-            )[0].id
+            )[0]
+
+            exoId = exo.id
 
             for i in range(4):
                 self.db.insert(
@@ -100,5 +108,55 @@ class AddExo:
                     stdin = stdins[i],
                     stdout = stdouts[i]
                 )
+            tests = self.db.select(
+                "tests",
+                dict(exo_id = exoId),
+                what = "stdin, stdout",
+                where = "exo_id = $exo_id"
+            )
+        else:
+            error = "compilation has failed"
 
-        raise web.seeother('/admin/add-exercise')
+
+        exo.problem = exo.problem.replace("\n","<br/>\n")
+        return self.render.showexo(
+            error,
+            compiler.compileSdtout,
+            exo,
+            tests
+        )
+
+
+
+class ShowExo:
+
+    def __init__(self) :
+        self.render = web.template.render('templates/', base = "layout")
+        self.db = web.database(dbn="sqlite", db="openoj.db")
+
+
+    def GET(self, exoId):
+        exo = self.db.select(
+            "exos",
+            dict(id= exoId),
+            what = "id,title, possible_solution, problem",
+            where = "id = $id"
+        )[0]
+
+        tests = self.db.select(
+            "tests",
+            dict(exo_id = exoId),
+            what = "stdin, stdout",
+            where = "exo_id = $exo_id"
+        )
+        exo.problem = exo.problem.replace("\n","<br/>\n")
+
+        return self.render.showexo(
+            None,
+            None,
+            exo,
+            tests
+        )
+
+        
+

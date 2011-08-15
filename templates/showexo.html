@@ -1,0 +1,29 @@
+$def with(error, compilerOutput, exo, tests)
+
+
+<a href="/">go back to index </a>
+
+
+$if exo:
+    <h2>$exo.id: $exo.title</h2>
+    <h3>Problem</h3>
+    <div>$:exo.problem</div>
+    <h3>Possible solution</h3>
+    <pre>$exo.possible_solution</pre>
+    <h3>Tests</h3>
+    $for test in tests:
+        <h5>Test</h5>
+        <h6>Input</h6>
+        <pre class="output">$test.stdin</pre>
+        <h6>Output</h6>
+        <pre class="output">$test.stdout</pre>
+
+
+$if error :
+    <h3>Some errors has occured</h3>
+    <div>$error</div>
+
+
+$if compilerOutput:
+    <h3>Compiler output</h3>
+    <div>$compilerOutput</div>

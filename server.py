@@ -13,6 +13,7 @@ urls = (
     '/', 'Index',
     '/exercise/(\\d*)', 'Exercise',
     '/admin/add-exercise', 'AddExo',
+    '/admin/show-exercise/(\\d*)', 'ShowExo',
     '/freestyle', 'Test'
 )
  
