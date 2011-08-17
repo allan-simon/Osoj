@@ -118,7 +118,8 @@ class AddExo:
             error = "compilation has failed"
 
 
-        exo.problem = exo.problem.replace("\n","<br/>\n")
+        if (exo):
+            exo.problem = exo.problem.replace("\n","<br/>\n")
         return self.render.showexo(
             error,
             compiler.compileSdtout,
